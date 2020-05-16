@@ -39,6 +39,9 @@ namespace EntityApi
 
             services.AddControllers();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using EntityApi.Models.Entity;
+using Microsoft.CodeAnalysis.Differencing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,60 +43,7 @@ namespace EntityApi.Repository
             return employees;
         }
 
-        public List<Models.Commen.TblDesignation> GetDesignation()
-        {
-            List<Models.Commen.TblDesignation> designations = new List<Models.Commen.TblDesignation>();
-            try
-            {
-                using (var dBContext = new HirenEmployeeContext())
-                {
-                    //GetEmployee
-                    Models.Commen.TblDesignation designation1;
-                    foreach (var des in dBContext.TblDesignation)
-                    {
-                        designation1 = new Models.Commen.TblDesignation();
-                        designation1.DesignationId = des.DesignationId;
-                        designation1.DesignationName = des.DesignationName;
-                        designations.Add(designation1);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                //throw;
-            }
-            return designations;
-
-        }
-        public List<Models.Commen.TblDepartment> GetDepartment()
-        {
-            List<Models.Commen.TblDepartment> departments = new List<Models.Commen.TblDepartment>();
-            try
-            {
-                using (var dBContext = new HirenEmployeeContext())
-                {
-                    //GetEmployee
-                    Models.Commen.TblDepartment department1;
-                    foreach (var dept in dBContext.TblDepartment)
-                    {
-                        department1 = new Models.Commen.TblDepartment();
-                        department1.DepartmentId = dept.DepartmentId;
-                        department1.DepartmentName = dept.DepartmentName;
-                        departments.Add(department1);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                //throw;
-            }
-            return departments;
-
-        }
+        
         public int SaveEmployee(Models.Commen.TblEmployee EmployeeModel)
         {
             int returnVal = 0;
@@ -206,6 +154,252 @@ namespace EntityApi.Repository
             }
             return returnVal;
         }
+
+
+        //************************
+        //Designation
+        //************************
+
+
+        public List<Models.Commen.TblDesignation> GetDesignation()
+        {
+            List<Models.Commen.TblDesignation> designations = new List<Models.Commen.TblDesignation>();
+            try
+            {
+                using (var dBContext = new HirenEmployeeContext())
+                {
+                    //GetEmployee
+                    Models.Commen.TblDesignation designation1;
+                    foreach (var des in dBContext.TblDesignation)
+                    {
+                        designation1 = new Models.Commen.TblDesignation();
+                        designation1.DesignationId = des.DesignationId;
+                        designation1.DesignationName = des.DesignationName;
+                        designations.Add(designation1);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return designations;
+
+        }
+
+
+
+        public int AddDesignation(Models.Commen.TblDesignation DesignationModel)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDesignation designationEntity;
+                    //Add Designation
+                    if (DesignationModel.DesignationId == 0)
+                    {
+                        designationEntity = new TblDesignation();
+                        designationEntity.DesignationName = DesignationModel.DesignationName;
+                        dBContext.TblDesignation.Add(designationEntity);
+                    }
+                    returnVal = dBContext.SaveChanges();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+
+        }
+
+        public int EditDesignation(Models.Commen.TblDesignation EditDes)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext1 = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDesignation designationEntity = new TblDesignation();
+
+                    designationEntity = dBContext1.TblDesignation.FirstOrDefault(x => x.DesignationId == EditDes.DesignationId);
+                    if (designationEntity != null)
+                    {
+                        designationEntity.DesignationId = EditDes.DesignationId;
+                        designationEntity.DesignationName = EditDes.DesignationName;
+                        dBContext1.TblDesignation.Update(designationEntity);
+                    }
+                    returnVal = dBContext1.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+        }
+
+        public int DeleteDesignation(int Id)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext1 = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDesignation designationEntity = new TblDesignation();
+                    Models.Commen.TblDesignation DeleteDes = new Models.Commen.TblDesignation();
+                    designationEntity = dBContext1.TblDesignation.FirstOrDefault(x => x.DesignationId == Id);
+                    if (designationEntity != null)
+                    {
+                        dBContext1.TblDesignation.Remove(designationEntity);
+                    }
+                    returnVal = dBContext1.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+        }
+
+
+
+        //************************
+        //Department
+        //************************
+
+
+
+        public List<Models.Commen.TblDepartment> GetDepartment()
+        {
+            List<Models.Commen.TblDepartment> departments = new List<Models.Commen.TblDepartment>();
+            try
+            {
+                using (var dBContext = new HirenEmployeeContext())
+                {
+                    //GetEmployee
+                    Models.Commen.TblDepartment department1;
+                    foreach (var dept in dBContext.TblDepartment)
+                    {
+                        department1 = new Models.Commen.TblDepartment();
+                        department1.DepartmentId = dept.DepartmentId;
+                        department1.DepartmentName = dept.DepartmentName;
+                        departments.Add(department1);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return departments;
+
+        }
+
+
+        public int AddDepartment(Models.Commen.TblDepartment DepartmentModel)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDepartment departmentEntity;
+                    //Add Designation
+                    if (DepartmentModel.DepartmentId == 0)
+                    {
+                        departmentEntity = new TblDepartment();
+                        departmentEntity.DepartmentName = DepartmentModel.DepartmentName;
+                        dBContext.TblDepartment.Add(departmentEntity);
+                    }
+                    returnVal = dBContext.SaveChanges();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+
+        }
+
+        public int EditDepartment(Models.Commen.TblDepartment EditDept)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext1 = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDepartment departmentEntity = new TblDepartment();
+
+                    departmentEntity = dBContext1.TblDepartment.FirstOrDefault(x => x.DepartmentId == EditDept.DepartmentId);
+                    if (departmentEntity != null)
+                    {
+                        departmentEntity.DepartmentId = EditDept.DepartmentId;
+                        departmentEntity.DepartmentName = EditDept.DepartmentName;
+                        dBContext1.TblDepartment.Update(departmentEntity);
+                    }
+                    returnVal = dBContext1.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+        }
+
+        public int DeleteDepartment(int Id)
+        {
+            int returnVal = 0;
+            try
+            {
+                using (var dBContext1 = new HirenEmployeeContext())
+                {
+                    Models.Entity.TblDepartment departmentEntity = new TblDepartment();
+                    Models.Commen.TblDepartment DeleteDept = new Models.Commen.TblDepartment();
+                    departmentEntity = dBContext1.TblDepartment.FirstOrDefault(x => x.DepartmentId == Id);
+                    if (departmentEntity != null)
+                    {
+                        dBContext1.TblDepartment.Remove(departmentEntity);
+                    }
+                    returnVal = dBContext1.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                //throw;
+            }
+            return returnVal;
+        }
+
 
     }
 }

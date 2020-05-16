@@ -31,18 +31,7 @@ namespace EntityApi.Controllers
             return _employeeRepository.GetEmployees();
         }
 
-        [HttpGet("GetDesignation")]
-        public List<Models.Commen.TblDesignation> GetDesignations()
-        {
-            return _employeeRepository.GetDesignation();
-        }
-
-        [HttpGet("GetDepartment")]
-        public List<Models.Commen.TblDepartment> GetDepartments()
-        {
-            return _employeeRepository.GetDepartment();
-        }
-
+  
 
         [HttpPost("SaveEmployee")]
         public int SaveEmployee([FromBody] TblEmployee emp1)
@@ -60,6 +49,64 @@ namespace EntityApi.Controllers
         public int DeleteEmployee(int id)
         {
             return _employeeRepository.DeleteEmployee(id);
+        }
+
+        //************
+        //Designation
+        //************
+
+        [HttpGet("GetDesignation")]
+        public List<Models.Commen.TblDesignation> GetDesignations()
+        {
+            return _employeeRepository.GetDesignation();
+        }
+
+        [HttpPost("AddDesignation")]
+        public int AddDesignation([FromBody] TblDesignation des1)
+        {
+            return _employeeRepository.AddDesignation(des1);
+        }
+
+        [HttpPost("EditDesignation")]
+        public int EditDesignation([FromBody] TblDesignation des)
+        {
+            return _employeeRepository.EditDesignation(des);
+        }
+
+        [HttpDelete("DeleteDesignation/{id}")]
+        public int DeleteDesignation(int id)
+        {
+            return _employeeRepository.DeleteDesignation(id);
+        }
+
+
+        //************
+        //Department
+        //************
+
+        [HttpGet("GetDepartment")]
+        public List<Models.Commen.TblDepartment> GetDepartments()
+        {
+            return _employeeRepository.GetDepartment();
+        }
+
+
+        [HttpPost("AddDepartment")]
+        public int AddDepartment([FromBody] TblDepartment dept1)
+        {
+            return _employeeRepository.AddDepartment(dept1);
+        }
+
+        [HttpPost("EditDepartment")]
+        public int EditDepartment([FromBody] TblDepartment dept)
+        {
+            return _employeeRepository.EditDepartment(dept);
+        }
+
+        [HttpDelete("DeleteDepartment/{id}")]
+        public int DeleteDepartment(int id)
+        {
+            return _employeeRepository.DeleteDepartment(id);
         }
 
 
