@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace EntityApi.Models.Commen
 {
-    public class TblDepartment
+    public class AppSetting
     {
-        public int DepartmentId { get; set; }
-        public string DepartmentName { get; set; }
+        public string  Key { get; set; }
     }
 }
