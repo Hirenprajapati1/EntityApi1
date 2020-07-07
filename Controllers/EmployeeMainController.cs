@@ -7,12 +7,16 @@ using EntityApi.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EntityApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
+    //[Microsoft.AspNetCore.Authorization.Authorize]
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowMyOrigin")]
+
     public class EmployeeMainController : ControllerBase
     {
         private readonly IEmployeeRepository _employeeRepository;
@@ -22,8 +26,10 @@ namespace EntityApi.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        #region Employee
+
         [HttpGet("GetEmployee")]
-        public List<Models.Commen.TblEmployee> GetEmployees()
+        public List<Models.Commen.Employee> GetEmployees()
         {
             //**** move this below code to dependency injection ***
             //_employeeRepository = employeeRepository;
@@ -31,18 +37,23 @@ namespace EntityApi.Controllers
             return _employeeRepository.GetEmployees();
         }
 
-  
-
-        [HttpPost("SaveEmployee")]
-        public int SaveEmployee([FromBody] TblEmployee emp1)
+        [HttpGet("GetEmployeeById/{id}")]
+        public Models.Commen.Employee GetEmployeeById(int id)
         {
-            return _employeeRepository.SaveEmployee(emp1);
+            return _employeeRepository.GetEmployeeById(id);
         }
 
-        [HttpPost("EditEmployee")]
-        public int EditEmployee([FromBody] TblEmployee emp)
+
+        [HttpPost("SaveEmployee")]
+        public int SaveEmployee([FromBody] Employee emp1, string EmployeeCode, DateTime Dob)
         {
-            return _employeeRepository.EditEmployee(emp);
+            return _employeeRepository.SaveEmployee(emp1, EmployeeCode, Dob);
+        }
+
+        [HttpPost("EditEmployee/{id}")]
+        public int EditEmployee([FromBody] Employee emp, string EmployeeCode, int Id, DateTime Dob, string Email)
+        {
+            return _employeeRepository.EditEmployee(emp, EmployeeCode, Id,  Dob,  Email);
         }
         
         [HttpDelete("DeleteEmployee/{id}")]
@@ -51,26 +62,38 @@ namespace EntityApi.Controllers
             return _employeeRepository.DeleteEmployee(id);
         }
 
+
+        #endregion
+
+        #region Designation
+
         //************
         //Designation
         //************
 
+        [HttpGet("GetDesignationById/{id}")]
+        public Models.Commen.Designation GetDesignationById(int id)
+        {
+            return _employeeRepository.GetDesignationById(id);
+        }
+
+
         [HttpGet("GetDesignation")]
-        public List<Models.Commen.TblDesignation> GetDesignations()
+        public List<Models.Commen.Designation> GetDesignations()
         {
             return _employeeRepository.GetDesignation();
         }
 
         [HttpPost("AddDesignation")]
-        public int AddDesignation([FromBody] TblDesignation des1)
+        public int AddDesignation([FromBody] Designation des1 , string DesignationName)
         {
-            return _employeeRepository.AddDesignation(des1);
+            return _employeeRepository.AddDesignation(des1, DesignationName);
         }
 
-        [HttpPost("EditDesignation")]
-        public int EditDesignation([FromBody] TblDesignation des)
+        [HttpPost("EditDesignation/{id}")]
+        public int EditDesignation([FromBody] Designation des, string DesignationName, int DesignationId)
         {
-            return _employeeRepository.EditDesignation(des);
+            return _employeeRepository.EditDesignation(des, DesignationName, DesignationId);
         }
 
         [HttpDelete("DeleteDesignation/{id}")]
@@ -79,28 +102,38 @@ namespace EntityApi.Controllers
             return _employeeRepository.DeleteDesignation(id);
         }
 
+        #endregion
+
+        #region Department
 
         //************
         //Department
         //************
 
+        [HttpGet("GetDepartmentById/{id}")]
+        public Models.Commen.Department GetDepartmentById(int id)
+        {
+            return _employeeRepository.GetDepartmentById(id);
+        }
+
+
         [HttpGet("GetDepartment")]
-        public List<Models.Commen.TblDepartment> GetDepartments()
+        public List<Models.Commen.Department> GetDepartments()
         {
             return _employeeRepository.GetDepartment();
         }
 
 
         [HttpPost("AddDepartment")]
-        public int AddDepartment([FromBody] TblDepartment dept1)
+        public int AddDepartment([FromBody] Department dept1, string DepartmentName)
         {
-            return _employeeRepository.AddDepartment(dept1);
+            return _employeeRepository.AddDepartment(dept1, DepartmentName);
         }
 
-        [HttpPost("EditDepartment")]
-        public int EditDepartment([FromBody] TblDepartment dept)
+        [HttpPost("EditDepartment/{id}")]
+        public int EditDepartment([FromBody] Department dept, string DepartmentName, int DepartmentId)
         {
-            return _employeeRepository.EditDepartment(dept);
+            return _employeeRepository.EditDepartment(dept, DepartmentName, DepartmentId);
         }
 
         [HttpDelete("DeleteDepartment/{id}")]
@@ -109,6 +142,6 @@ namespace EntityApi.Controllers
             return _employeeRepository.DeleteDepartment(id);
         }
 
-
+        #endregion
     }
 }

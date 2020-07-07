@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EntityApi.Models.Entity;
+using EntityApi.Model1.Entity ;
 
 namespace EntityApi.Repository
 {

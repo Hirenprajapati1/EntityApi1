@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace EntityApi.Models.Commen
 {
-    public class TblDesignation
+    public class User
     {
-        public int DesignationId { get; set; }
-        public string DesignationName { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string FileName { get; set; }
+
     }
 }
